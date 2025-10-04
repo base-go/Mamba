@@ -1,6 +1,12 @@
 # 🐍 Mamba
 
-A modern, drop-in replacement for [Cobra](https://github.com/spf13/cobra) with enhanced terminal features including beautiful colored output, interactive prompts, loading spinners, and progress bars.
+[![Go Reference](https://pkg.go.dev/badge/github.com/base-go/mamba.svg)](https://pkg.go.dev/github.com/base-go/mamba)
+[![Go Report Card](https://goreportcard.com/badge/github.com/base-go/mamba)](https://goreportcard.com/report/github.com/base-go/mamba)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A modern, **100% drop-in replacement** for [Cobra](https://github.com/spf13/cobra) with enhanced terminal features including beautiful colored output, interactive prompts, loading spinners, and progress bars.
+
+> **Fast, elegant, and powerful** - just like the snake! 🐍
 
 ## Features
 
@@ -11,6 +17,23 @@ A modern, drop-in replacement for [Cobra](https://github.com/spf13/cobra) with e
 - 📊 **Progress Bars** - Track progress for batch operations
 - 🎯 **Styled Help Messages** - Enhanced help output with colors and structure
 - 🔧 **Full Flag Support** - Compatible with [pflag](https://github.com/spf13/pflag)
+
+## Demo
+
+See Mamba in action! Run the included demo to experience all features:
+
+```bash
+go get github.com/base-go/mamba
+cd examples/basic
+go run main.go
+```
+
+The demo showcases:
+- 🎨 Styled output (success, error, warning, info)
+- ⏳ Loading spinners with animations
+- 📊 Progress bars for batch operations
+- 💬 Interactive prompts
+- 🎯 Modern help messages
 
 ## Installation
 
@@ -77,6 +100,23 @@ var rootCmd = &mamba.Command{
 ```
 
 That's it! Your existing Cobra code will work seamlessly with Mamba, but you now have access to modern terminal features.
+
+## Mamba vs Cobra
+
+| Feature | Cobra | Mamba |
+|---------|-------|-------|
+| Command structure | ✅ | ✅ |
+| Subcommands | ✅ | ✅ |
+| Flags (local & persistent) | ✅ | ✅ |
+| Lifecycle hooks | ✅ | ✅ |
+| Argument validation | ✅ | ✅ |
+| Help generation | ✅ | ✅ **Enhanced** |
+| Colored output | ❌ | ✅ |
+| Loading spinners | ❌ | ✅ |
+| Progress bars | ❌ | ✅ |
+| Interactive prompts | ❌ | ✅ |
+| Styled help messages | ❌ | ✅ |
+| Modern terminal UX | ❌ | ✅ |
 
 ## Enhanced Features
 

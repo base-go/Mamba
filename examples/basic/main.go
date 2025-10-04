@@ -13,7 +13,6 @@ import (
 
 var (
 	verbose bool
-	output  string
 )
 
 func main() {
@@ -30,8 +29,84 @@ Mamba is a drop-in replacement for Cobra with enhanced UX features.`,
   demo interactive
   demo styled`,
 		Run: func(cmd *mamba.Command, args []string) {
-			cmd.PrintHeader("Welcome to Mamba! 🐍")
-			cmd.PrintInfo("Run 'demo --help' to see available commands")
+			// Welcome header
+			cmd.PrintHeader("🐍 Welcome to Mamba!")
+			fmt.Println()
+			cmd.PrintInfo("A modern CLI framework with beautiful terminal features")
+			fmt.Println()
+			time.Sleep(500 * time.Millisecond)
+
+			// Show styled messages
+			cmd.PrintSubHeader("Status Messages:")
+			cmd.PrintSuccess("Success messages look like this")
+			cmd.PrintWarning("Warning messages look like this")
+			cmd.PrintError("Error messages look like this")
+			cmd.PrintInfo("Info messages look like this")
+			fmt.Println()
+			time.Sleep(800 * time.Millisecond)
+
+			// Show spinner demo
+			cmd.PrintSubHeader("Loading Spinner:")
+			spinner.WithSpinner("Initializing demo environment...", func() error {
+				time.Sleep(2 * time.Second)
+				return nil
+			})
+			fmt.Println()
+			time.Sleep(300 * time.Millisecond)
+
+			// Show progress bar demo
+			cmd.PrintSubHeader("Progress Bar:")
+			spinner.WithProgress("Loading components...", 8, func(update func()) {
+				components := []string{"Colors", "Styles", "Prompts", "Spinners", "Progress", "Tables", "Boxes", "Icons"}
+				for range components {
+					time.Sleep(300 * time.Millisecond)
+					update()
+				}
+			})
+			fmt.Println()
+			time.Sleep(300 * time.Millisecond)
+
+			// Interactive prompt
+			cmd.PrintSubHeader("Interactive Prompt:")
+			name, err := interactive.AskString("What's your name?", "Enter your name")
+			if err != nil {
+				name = "Friend"
+			}
+			fmt.Println()
+
+			// Personalized greeting
+			cmd.PrintSuccess(fmt.Sprintf("Hello, %s! 👋", name))
+			fmt.Println()
+			time.Sleep(500 * time.Millisecond)
+
+			// Show feature list
+			cmd.PrintSubHeader("Available Features:")
+			cmd.PrintBullet("Beautiful colored output")
+			cmd.PrintBullet("Interactive prompts")
+			cmd.PrintBullet("Loading spinners")
+			cmd.PrintBullet("Progress bars")
+			cmd.PrintBullet("Styled help messages")
+			cmd.PrintBullet("100% Cobra compatible")
+			fmt.Println()
+			time.Sleep(500 * time.Millisecond)
+
+			// Show code example
+			cmd.PrintSubHeader("Quick Start:")
+			cmd.PrintCode("go get github.com/base-go/mamba")
+			fmt.Println()
+			time.Sleep(300 * time.Millisecond)
+
+			// Show box with next steps
+			cmd.PrintBox("Next Steps",
+				"Try these commands:\n"+
+				"  • demo styled       - See all styling options\n"+
+				"  • demo interactive  - Try interactive prompts\n"+
+				"  • demo process      - Watch a spinner in action\n"+
+				"  • demo --help       - See all available commands")
+			fmt.Println()
+
+			// Final message
+			cmd.PrintInfo("Run 'demo --help' to see all available commands")
 		},
 	}
 

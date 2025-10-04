@@ -9,7 +9,22 @@ import (
 	"github.com/spf13/pflag"
 )
 
-// Command represents a CLI command with modern terminal features
+// Command represents a CLI command with modern terminal features.
+//
+// Command is fully compatible with Cobra's Command struct and can be used as a drop-in replacement.
+// It extends Cobra's functionality with modern terminal features including colored output,
+// interactive prompts, loading spinners, and styled help messages.
+//
+// Example:
+//
+//	cmd := &mamba.Command{
+//		Use:   "myapp",
+//		Short: "My application",
+//		Run: func(cmd *mamba.Command, args []string) {
+//			cmd.PrintSuccess("Hello, Mamba!")
+//		},
+//	}
+//	cmd.Execute()
 type Command struct {
 	// Use is the one-line usage message
 	Use string
@@ -122,11 +137,22 @@ type Command struct {
 	ShowSpinner bool
 }
 
-// PositionalArgs defines a validation function for positional arguments
+// PositionalArgs defines a validation function for positional arguments.
+// It is used to validate command arguments before the Run function is called.
+//
+// Example:
+//
+//	cmd := &mamba.Command{
+//		Use:  "copy <source> <dest>",
+//		Args: mamba.ExactArgs(2),
+//		Run:  func(cmd *mamba.Command, args []string) { ... },
+//	}
 type PositionalArgs func(cmd *Command, args []string) error
 
-// Standard validators for positional arguments
+// Standard validators for positional arguments.
+// These can be used in the Args field of a Command to validate argument counts.
 var (
+	// NoArgs returns an error if any args are provided
 	NoArgs = func(cmd *Command, args []string) error {
 		if len(args) > 0 {
 			return fmt.Errorf("unknown command %q for %q", args[0], cmd.Use)
@@ -134,10 +160,12 @@ var (
 		return nil
 	}
 
+	// ArbitraryArgs accepts any number of args (including zero)
 	ArbitraryArgs = func(cmd *Command, args []string) error {
 		return nil
 	}
 
+	// MinimumNArgs returns an error if there are not at least N args
 	MinimumNArgs = func(n int) PositionalArgs {
 		return func(cmd *Command, args []string) error {
 			if len(args) < n {
@@ -147,6 +175,7 @@ var (
 		}
 	}
 
+	// MaximumNArgs returns an error if there are more than N args
 	MaximumNArgs = func(n int) PositionalArgs {
 		return func(cmd *Command, args []string) error {
 			if len(args) > n {
@@ -156,7 +185,8 @@ var (
 		}
 	}
 
-	ExactArgs = func(n int) PositionalArgs {
+	// ExactArgs returns an error if there are not exactly N args
+	ExactArgs = func(n int) PositionalArgs{
 		return func(cmd *Command, args []string) error {
 			if len(args) != n {
 				return fmt.Errorf("accepts %d arg(s), received %d", n, len(args))
@@ -165,6 +195,7 @@ var (
 		}
 	}
 
+	// RangeArgs returns an error if the number of args is not within the range [min, max]
 	RangeArgs = func(min, max int) PositionalArgs {
 		return func(cmd *Command, args []string) error {
 			if len(args) < min || len(args) > max {
@@ -189,55 +220,69 @@ func (c *Command) ExecuteContext(ctx interface{}) error {
 }
 
 func (c *Command) execute(args []string) error {
-	// Parse flags if enabled
-	if !c.DisableFlagParsing {
-		if err := c.ParseFlags(args); err != nil {
-			return err
-		}
-		args = c.Flags().Args()
-	}
-
-	// Find the command to execute
-	cmd, flags, err := c.Find(args)
+	// Find the command to execute first (before parsing flags)
+	cmd, cmdArgs, err := c.Find(args)
 	if err != nil {
 		return err
 	}
 
+	// Initialize help flag for the found command
+	cmd.initDefaultHelpFlag()
+
+	// Parse flags on the found command
+	if !cmd.DisableFlagParsing {
+		if err := cmd.ParseFlags(cmdArgs); err != nil {
+			// Check if it's a help request from pflag
+			if err == pflag.ErrHelp {
+				cmd.Help()
+				return nil
+			}
+			return err
+		}
+		cmdArgs = cmd.Flags().Args()
+	}
+
+	// Check if help was requested after parsing
+	if cmd.helpFlagSet() {
+		cmd.Help()
+		return nil
+	}
+
 	// Validate arguments
 	if cmd.Args != nil {
-		if err := cmd.Args(cmd, flags); err != nil {
+		if err := cmd.Args(cmd, cmdArgs); err != nil {
 			return err
 		}
 	}
 
 	// Execute persistent pre-run
-	if err := cmd.executePersistentPreRun(flags); err != nil {
+	if err := cmd.executePersistentPreRun(cmdArgs); err != nil {
 		return err
 	}
 
 	// Execute pre-run
-	if err := cmd.executePreRun(flags); err != nil {
+	if err := cmd.executePreRun(cmdArgs); err != nil {
 		return err
 	}
 
 	// Execute main run
-	if err := cmd.executeRun(flags); err != nil {
-		if !c.SilenceErrors {
-			fmt.Fprintln(c.ErrOrStderr(), err)
+	if err := cmd.executeRun(cmdArgs); err != nil {
+		if !cmd.SilenceErrors {
+			fmt.Fprintln(cmd.ErrOrStderr(), err)
 		}
-		if !c.SilenceUsage {
-			c.Usage()
+		if !cmd.SilenceUsage {
+			cmd.Usage()
 		}
 		return err
 	}
 
 	// Execute post-run
-	if err := cmd.executePostRun(flags); err != nil {
+	if err := cmd.executePostRun(cmdArgs); err != nil {
 		return err
 	}
 
 	// Execute persistent post-run
-	if err := cmd.executePersistentPostRun(flags); err != nil {
+	if err := cmd.executePersistentPostRun(cmdArgs); err != nil {
 		return err
 	}
 
@@ -603,4 +648,20 @@ func (c *Command) SetUsageFunc(f func(*Command) error) {
 // SetUsageTemplate sets the usage template
 func (c *Command) SetUsageTemplate(s string) {
 	// TODO: implement usage templating
+}
+
+// initDefaultHelpFlag adds the default help flag if it doesn't exist
+func (c *Command) initDefaultHelpFlag() {
+	if c.Flags().Lookup("help") == nil {
+		c.Flags().BoolP("help", "h", false, "help for "+c.Name())
+	}
+}
+
+// helpFlagSet checks if the help flag was set
+func (c *Command) helpFlagSet() bool {
+	flag := c.Flags().Lookup("help")
+	if flag == nil {
+		return false
+	}
+	return flag.Value.String() == "true"
 }
