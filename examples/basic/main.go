@@ -197,7 +197,7 @@ Mamba is a drop-in replacement for Cobra with enhanced UX features.`,
 			fmt.Println()
 
 			// Code
-			cmd.PrintCode("go get github.com/flakerim/mamba")
+			cmd.PrintCode("go get github.com/base-go/mamba")
 			fmt.Println()
 
 			// Box
