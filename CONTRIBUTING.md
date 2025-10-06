@@ -1,6 +1,6 @@
 # Contributing to Mamba
 
-Thank you for your interest in contributing to Mamba! 🐍
+Thank you for your interest in contributing to Mamba.
 
 ## Code of Conduct
 
@@ -148,10 +148,10 @@ When adding new features:
 
 Mamba is a **100% drop-in replacement** for Cobra. When making changes:
 
-- ✅ All Cobra APIs must continue to work
-- ✅ Behavior should match Cobra unless enhancing UX
-- ✅ New features should be additive, not breaking
-- ✅ Test with real Cobra code to verify compatibility
+- All Cobra APIs must continue to work
+- Behavior should match Cobra unless enhancing UX
+- New features should be additive, not breaking
+- Test with real Cobra code to verify compatibility
 
 ## Release Process
 

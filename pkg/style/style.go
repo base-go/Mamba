@@ -112,15 +112,15 @@ var (
 
 // Status icons
 const (
-	SuccessIcon = "✓"
-	ErrorIcon   = "✗"
-	WarningIcon = "⚠"
-	InfoIcon    = "ℹ"
+	SuccessIcon  = "✓"
+	ErrorIcon    = "✗"
+	WarningIcon  = "⚠"
+	InfoIcon     = "ℹ"
 	QuestionIcon = "?"
-	ArrowIcon   = "→"
-	BulletIcon  = "•"
-	CheckIcon   = "✔"
-	CrossIcon   = "✖"
+	ArrowIcon    = "→"
+	BulletIcon   = "•"
+	CheckIcon    = "✔"
+	CrossIcon    = "✖"
 )
 
 // Render functions
@@ -223,7 +223,7 @@ func Muted(msg string) string {
 
 // Prompt renders a prompt
 func Prompt(msg string) string {
-	return PromptStyle.Render(msg+" "+ArrowIcon+" ")
+	return PromptStyle.Render(msg + " " + ArrowIcon + " ")
 }
 
 // Input renders user input

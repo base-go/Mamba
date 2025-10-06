@@ -186,7 +186,7 @@ var (
 	}
 
 	// ExactArgs returns an error if there are not exactly N args
-	ExactArgs = func(n int) PositionalArgs{
+	ExactArgs = func(n int) PositionalArgs {
 		return func(cmd *Command, args []string) error {
 			if len(args) != n {
 				return fmt.Errorf("accepts %d arg(s), received %d", n, len(args))

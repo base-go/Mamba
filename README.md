@@ -1,22 +1,29 @@
-# 🐍 Mamba
+# Mamba
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/base-go/mamba.svg)](https://pkg.go.dev/github.com/base-go/mamba)
 [![Go Report Card](https://goreportcard.com/badge/github.com/base-go/mamba)](https://goreportcard.com/report/github.com/base-go/mamba)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A modern, **100% drop-in replacement** for [Cobra](https://github.com/spf13/cobra) with enhanced terminal features including beautiful colored output, interactive prompts, loading spinners, and progress bars.
+A modern, **drop-in replacement** for [Cobra](https://github.com/spf13/cobra) with enhanced terminal features including beautiful colored output, interactive prompts, loading spinners, and progress bars.
 
-> **Fast, elegant, and powerful** - just like the snake! 🐍
+> **Fast, elegant, and powerful** - just like the snake.
 
 ## Features
 
-- ✅ **100% Cobra Compatible** - Drop-in replacement with the same API
-- 🎨 **Modern Styled Output** - Beautiful colors and formatting using [lipgloss](https://github.com/charmbracelet/lipgloss)
-- 💬 **Interactive Prompts** - User-friendly input prompts with [huh](https://github.com/charmbracelet/huh)
-- ⏳ **Loading Spinners** - Visual feedback for long-running operations
-- 📊 **Progress Bars** - Track progress for batch operations
-- 🎯 **Styled Help Messages** - Enhanced help output with colors and structure
-- 🔧 **Full Flag Support** - Compatible with [pflag](https://github.com/spf13/pflag)
+**Core Cobra Compatibility:**
+- **Subcommands & Nesting** - Full support for complex CLI hierarchies
+- **POSIX Flags** - Short & long flags via [pflag](https://github.com/spf13/pflag)
+- **Command Aliases** - Multiple names for the same command
+- **Lifecycle Hooks** - PreRun, PostRun, and persistent variants
+- **Argument Validation** - Built-in validators (ExactArgs, MinimumNArgs, etc.)
+- **Help Generation** - Automatic -h, --help with enhanced styling
+
+**Modern Terminal Features:**
+- **Styled Output** - Beautiful colors and formatting using [lipgloss](https://github.com/charmbracelet/lipgloss)
+- **Interactive Prompts** - User-friendly input with [huh](https://github.com/charmbracelet/huh)
+- **Loading Spinners** - Visual feedback for long-running operations
+- **Progress Bars** - Track progress for batch operations
+- **Enhanced Help** - Colored, structured help messages
 
 ## Demo
 
@@ -29,11 +36,11 @@ go run main.go
 ```
 
 The demo showcases:
-- 🎨 Styled output (success, error, warning, info)
-- ⏳ Loading spinners with animations
-- 📊 Progress bars for batch operations
-- 💬 Interactive prompts
-- 🎯 Modern help messages
+- Styled output (success, error, warning, info)
+- Loading spinners with animations
+- Progress bars for batch operations
+- Interactive prompts
+- Modern help messages
 
 ## Installation
 
@@ -101,22 +108,49 @@ var rootCmd = &mamba.Command{
 
 That's it! Your existing Cobra code will work seamlessly with Mamba, but you now have access to modern terminal features.
 
+## Cobra Compatibility
+
+Mamba implements all core Cobra features:
+
+**Fully Supported:**
+- Subcommand-based CLIs (app server, app fetch, etc.)
+- POSIX-compliant flags (short & long versions via pflag)
+- Nested subcommands
+- Global, local, and cascading flags
+- Automatic help generation with -h, --help
+- Command aliases
+- Lifecycle hooks (PreRun, PostRun, etc.)
+- Argument validators (ExactArgs, MinimumNArgs, etc.)
+- Custom help and usage functions
+- Context support
+
+**Not Yet Implemented:**
+- Intelligent suggestions ("did you mean...?")
+- Shell autocomplete generation (bash, zsh, fish, powershell)
+- Man page generation
+- Command grouping in help
+- Viper integration for config files
+
 ## Mamba vs Cobra
 
 | Feature | Cobra | Mamba |
 |---------|-------|-------|
-| Command structure | ✅ | ✅ |
-| Subcommands | ✅ | ✅ |
-| Flags (local & persistent) | ✅ | ✅ |
-| Lifecycle hooks | ✅ | ✅ |
-| Argument validation | ✅ | ✅ |
-| Help generation | ✅ | ✅ **Enhanced** |
-| Colored output | ❌ | ✅ |
-| Loading spinners | ❌ | ✅ |
-| Progress bars | ❌ | ✅ |
-| Interactive prompts | ❌ | ✅ |
-| Styled help messages | ❌ | ✅ |
-| Modern terminal UX | ❌ | ✅ |
+| Command structure | Yes | Yes |
+| Subcommands & nesting | Yes | Yes |
+| POSIX flags (pflag) | Yes | Yes |
+| Lifecycle hooks | Yes | Yes |
+| Argument validation | Yes | Yes |
+| Command aliases | Yes | Yes |
+| Help generation | Yes | Yes (Enhanced & Styled) |
+| Shell autocomplete | Yes | No (planned) |
+| Intelligent suggestions | Yes | No (planned) |
+| Man page generation | Yes | No (planned) |
+| Viper integration | Optional | No (planned) |
+| Colored output | No | Yes |
+| Loading spinners | No | Yes |
+| Progress bars | No | Yes |
+| Interactive prompts | No | Yes |
+| Modern terminal UX | No | Yes |
 
 ## Enhanced Features
 
@@ -232,14 +266,14 @@ go run main.go
 
 Mamba maintains 100% API compatibility with Cobra. All these features work identically:
 
-- ✅ Command structure (`Use`, `Short`, `Long`, `Example`)
-- ✅ Subcommands (`AddCommand`, `RemoveCommand`)
-- ✅ Flags (local, persistent, shorthand)
-- ✅ Lifecycle hooks (`PreRun`, `PostRun`, `PersistentPreRun`, etc.)
-- ✅ Argument validators (`NoArgs`, `ExactArgs`, `MinimumNArgs`, etc.)
-- ✅ Error handling (`RunE`, `PreRunE`, `PostRunE`)
-- ✅ Context support
-- ✅ Custom help and usage templates
+- Command structure (`Use`, `Short`, `Long`, `Example`)
+- Subcommands (`AddCommand`, `RemoveCommand`)
+- Flags (local, persistent, shorthand)
+- Lifecycle hooks (`PreRun`, `PostRun`, `PersistentPreRun`, etc.)
+- Argument validators (`NoArgs`, `ExactArgs`, `MinimumNArgs`, etc.)
+- Error handling (`RunE`, `PreRunE`, `PostRunE`)
+- Context support
+- Custom help and usage templates
 
 ## Advanced Usage
 
@@ -295,9 +329,32 @@ Mamba is built on top of excellent libraries:
 - [charmbracelet/huh](https://github.com/charmbracelet/huh) - Interactive forms
 - [charmbracelet/bubbles](https://github.com/charmbracelet/bubbles) - TUI components
 
+## Roadmap
+
+Planned features to achieve full Cobra parity:
+
+- **v1.1.0**
+  - Intelligent command suggestions ("did you mean...?")
+  - Custom help templates and functions
+  - Command grouping in help output
+
+- **v1.2.0**
+  - Shell completion generation (bash, zsh, fish, powershell)
+  - Man page generation
+  - Enhanced error messages with suggestions
+
+- **v1.3.0**
+  - Viper integration for configuration management
+  - Advanced validation and hooks
+  - Performance optimizations
+
+Want to contribute? Check out our [issues](https://github.com/base-go/mamba/issues) or submit a PR!
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 
@@ -312,7 +369,7 @@ Cobra is excellent, but modern CLI applications deserve modern UX. Mamba brings:
 - **Progressive Enhancement** - Use as much or as little of the modern features as you want
 - **Battle-tested** - Built on proven libraries from the Charm ecosystem
 
-Named after the black mamba snake - fast, elegant, and powerful! 🐍
+Named after the black mamba snake - fast, elegant, and powerful.
 
 ## Credits
 

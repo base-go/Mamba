@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2025-01-04
 
 ### Added
-- Initial release of Mamba 🐍
+- Initial release of Mamba
 - 100% drop-in replacement for Cobra with the same API
 - Modern styled output with lipgloss integration
   - `PrintSuccess()`, `PrintError()`, `PrintWarning()`, `PrintInfo()`

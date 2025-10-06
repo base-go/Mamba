@@ -99,10 +99,10 @@ Mamba is a drop-in replacement for Cobra with enhanced UX features.`,
 			// Show box with next steps
 			cmd.PrintBox("Next Steps",
 				"Try these commands:\n"+
-				"  • demo styled       - See all styling options\n"+
-				"  • demo interactive  - Try interactive prompts\n"+
-				"  • demo process      - Watch a spinner in action\n"+
-				"  • demo --help       - See all available commands")
+					"  • demo styled       - See all styling options\n"+
+					"  • demo interactive  - Try interactive prompts\n"+
+					"  • demo process      - Watch a spinner in action\n"+
+					"  • demo --help       - See all available commands")
 			fmt.Println()
 
 			// Final message
